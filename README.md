@@ -1,106 +1,106 @@
 # CopyPaste
 
-Riwayat clipboard untuk macOS, mirip Win+V di Windows. App ini berjalan di menu bar. Ikonnya ada di kanan atas layar, dan app tidak muncul di Dock.
+Clipboard history for macOS, similar to Win+V on Windows. The app runs in the menu bar. Its icon is at the top right of the screen, and the app does not appear in the Dock.
 
-## Fitur
+## Features
 
-- Riwayat teks, tautan, kode, warna hex, gambar, dan file
-- Pencarian dan filter: Semua, Teks, Tautan, Gambar, File
-- Sematkan item supaya tidak ikut terhapus
-- Pratinjau isi item
-- Hapus item dengan undo
-- Pintasan buka panel bisa diubah, default ⌃⌘V
-- Jeda pencatatan, dan item dari password manager dilewati
-- Batas jumlah item dan hapus otomatis setelah beberapa hari
-- Buka saat login
+- History of text, links, code, hex colors, images, and files
+- Search and filters: All, Text, Links, Images, Files
+- Pin items so they are not removed
+- Preview item contents
+- Delete items with undo
+- The panel shortcut can be changed, default ⌃⌘V
+- Pause recording; items from password managers are skipped
+- Limit the number of items, and delete old items automatically after a number of days
+- Launch at login
 
-## Persyaratan
+## Requirements
 
-- macOS 14 atau lebih baru
-- Swift 5.10 atau lebih baru (diuji dengan Swift 6.2)
-- Command Line Tools cukup, Xcode tidak perlu. Kalau belum punya, jalankan `xcode-select --install`.
+- macOS 14 or later
+- Swift 5.10 or later (tested with Swift 6.2)
+- Command Line Tools are enough; Xcode is not needed. If you don't have them, run `xcode-select --install`.
 
-## Menjalankan
+## Building and running
 
-Bangun app:
+Build the app:
 
 ```bash
 ./scripts/make-app.sh
 ```
 
-Buka app:
+Open the app:
 
 ```bash
 open build/CopyPaste.app
 ```
 
-Saat pertama kali dibuka, jendela **Izin** muncul. Setelah itu, tekan ⌃⌘V atau klik ikon clipboard di menu bar.
+The first time you open it, the **Permissions** window appears. After that, press ⌃⌘V or click the clipboard icon in the menu bar.
 
-## Izin
+## Permissions
 
-| Izin | Dipakai untuk | Kalau tidak diberikan |
+| Permission | Used for | If not granted |
 |---|---|---|
-| Akses clipboard dari aplikasi lain (macOS 15.4 ke atas) | Membaca apa yang disalin | Riwayat tidak terekam. Saat macOS bertanya, pilih **Izinkan**. |
-| Aksesibilitas | Tempel otomatis dan posisi panel dekat kursor teks | Item tetap disalin, lalu tekan ⌘V sendiri. Panel muncul dekat kursor mouse. |
+| Clipboard access from other apps (macOS 15.4 and later) | Reading what you copy | History is not recorded. When macOS asks, choose **Allow**. |
+| Accessibility | Automatic paste and placing the panel near the text cursor | Items are still copied; press ⌘V yourself. The panel appears near the mouse pointer. |
 
-Pintasan ⌃⌘V tidak memerlukan izin tambahan.
+The ⌃⌘V shortcut does not need any extra permission.
 
-## Pintasan di panel
+## Panel shortcuts
 
-| Tombol | Fungsi |
+| Key | Action |
 |---|---|
-| ↑ ↓ | Pilih item |
-| ↵ | Tempel |
-| ⇧↵ | Tempel sebagai teks polos |
-| → | Buka pratinjau (saat kursor ada di ujung teks pencarian) |
-| ← | Tutup pratinjau |
-| ⌘1 … ⌘9 | Tempel item ke-1 sampai ke-9 |
-| ⌘P | Sematkan atau lepas sematan |
-| ⌘⌫ | Hapus item |
-| ⌘Z | Urungkan hapus terakhir |
-| Tab / ⇧Tab | Ganti filter |
-| Esc | Tutup pratinjau, lalu panel |
+| ↑ ↓ | Select an item |
+| ↵ | Paste |
+| ⇧↵ | Paste as plain text |
+| → | Open the preview (when the cursor is at the end of the search text) |
+| ← | Close the preview |
+| ⌘1 … ⌘9 | Paste item 1 to 9 |
+| ⌘P | Pin or unpin an item |
+| ⌘⌫ | Delete an item |
+| ⌘Z | Undo the last deletion |
+| Tab / ⇧Tab | Switch filter |
+| Esc | Close the preview, then the panel |
 
-Pengaturan dibuka dari menu bar lewat **Pengaturan…**, atau dari tombol roda gigi di bawah panel.
+Open Settings from the menu bar with **Settings…**, or from the gear button at the bottom of the panel.
 
-## Data dan privasi
+## Data and privacy
 
-- Riwayat disimpan di `~/Library/Application Support/CopyPaste/` (`history.json` dan folder `blobs/`). Data ini **tidak dienkripsi**.
-- Item yang ditandai rahasia oleh password manager dilewati. Ini bisa diatur di Pengaturan.
-- Proyek ini tidak memakai jaringan.
+- History is stored in `~/Library/Application Support/CopyPaste/` (`history.json` and the `blobs/` folder). This data is **not encrypted**.
+- Items that a password manager marks as secret are skipped. You can change this in Settings.
+- This project does not use the network.
 
-## Struktur proyek
+## Project structure
 
-- `Sources/CopyPasteKit`: model, pencatat clipboard, penyimpanan, dan tempel. Tanpa UI.
-- `Sources/CopyPasteUI`: panel, pratinjau, pengaturan, dan layar izin (SwiftUI).
-- `Sources/CopyPaste`: app menu bar, pintasan global, dan kontrol panel.
-- `Sources/CopyPasteSnapshot`: membuat gambar panel dari data contoh.
-- `Tests/CopyPasteKitTests`: unit test.
-- `scripts/`: skrip untuk test dan membuat `.app`.
+- `Sources/CopyPasteKit`: models, clipboard recorder, storage, and paste. No UI.
+- `Sources/CopyPasteUI`: panel, preview, settings, and the permissions window (SwiftUI).
+- `Sources/CopyPaste`: menu bar app, global shortcut, and panel control.
+- `Sources/CopyPasteSnapshot`: renders panel images from sample data.
+- `Tests/CopyPasteKitTests`: unit tests.
+- `scripts/`: scripts for running the tests and building the `.app`.
 
-## Pengembangan
+## Development
 
-Jalankan test:
+Run the tests:
 
 ```bash
 ./scripts/test.sh
 ```
 
-Di Command Line Tools tanpa Xcode, Swift Testing perlu flag tambahan. `scripts/test.sh` sudah mengaturnya.
+On Command Line Tools without Xcode, Swift Testing needs extra flags. `scripts/test.sh` already sets them.
 
-Buat gambar panel dengan data contoh (tidak membaca clipboard asli):
+Render the panel with sample data (this does not read your real clipboard):
 
 ```bash
 swift run CopyPasteSnapshot build/snapshots
 ```
 
-## Batasan
+## Limitations
 
-- Build dari `make-app.sh` hanya ditandatangani ad-hoc. Cukup untuk dijalankan di Mac yang membangunnya, tapi belum dinotarisasi untuk dibagikan.
-- Undo hanya berlaku untuk penghapusan terakhir.
-- Riwayat belum dienkripsi.
-- Perilaku pintasan yang juga dipakai aplikasi lain bergantung pada macOS.
+- A build from `make-app.sh` is only ad-hoc signed. It is enough to run on the Mac that built it, but it is not notarized for distribution.
+- Undo only works for the last deletion.
+- History is not encrypted.
+- How a shortcut behaves when another app uses the same shortcut depends on macOS.
 
-## Lisensi
+## License
 
-MIT. Lihat [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
